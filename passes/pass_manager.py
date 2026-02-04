@@ -229,12 +229,14 @@ def create_aggressive_pipeline(opt_level: int = 3) -> PassPipeline:
     return pipeline
 
 
-def create_visvpu_pipeline(opt_level: int = 3) -> PassPipeline:
+def create_visvpu_pipeline(opt_level: int = 3, enable_fold_constant: bool = False, enable_fold_scale_axis: bool = False) -> PassPipeline:
     """
     Create optimization pipeline optimized for VIS VPU hardware.
     
     Args:
         opt_level: Optimization level
+        enable_fold_constant: Enable FoldConstant pass (requires LLVM)
+        enable_fold_scale_axis: Enable FoldScaleAxis pass (requires LLVM)
         
     Returns:
         Pass pipeline
@@ -244,13 +246,15 @@ def create_visvpu_pipeline(opt_level: int = 3) -> PassPipeline:
     # Initial cleanup
     pipeline.add_pass(InferTypePass())
     pipeline.add_pass(SimplifyInferencePass())
-    pipeline.add_pass(FoldConstantPass())
+    if enable_fold_constant:
+        pipeline.add_pass(FoldConstantPass())
     pipeline.add_pass(SimplifyExprPass())
     
     # Canonicalization and cleanup
     pipeline.add_pass(CanonicalizeCastPass())
     pipeline.add_pass(CanonicalizeOpsPass())
-    pipeline.add_pass(FoldScaleAxisPass())
+    if enable_fold_scale_axis:
+        pipeline.add_pass(FoldScaleAxisPass())
     
     # VIS VPU-specific optimizations
     pipeline.add_pass(RedundancyEliminationPass(apply_cse=True))
@@ -266,7 +270,8 @@ def create_visvpu_pipeline(opt_level: int = 3) -> PassPipeline:
     pipeline.add_pass(EnhancedDCEPass())
     
     # Final passes
-    pipeline.add_pass(FoldConstantPass())
+    if enable_fold_constant:
+        pipeline.add_pass(FoldConstantPass())
     pipeline.add_pass(InferTypePass())
     
     return pipeline
@@ -321,7 +326,9 @@ class PassManager:
         mod: tvm.IRModule,
         preset: str = 'standard',
         opt_level: int = 2,
-        visualize: bool = False
+        visualize: bool = False,
+        enable_fold_constant: bool = False,
+        enable_fold_scale_axis: bool = False
     ) -> tvm.IRModule:
         """
         Convenience method to optimize a module.
@@ -331,11 +338,16 @@ class PassManager:
             preset: Pipeline preset
             opt_level: Optimization level
             visualize: Whether to visualize pass effects
+            enable_fold_constant: Enable FoldConstant pass (requires LLVM)
+            enable_fold_scale_axis: Enable FoldScaleAxis pass (requires LLVM)
             
         Returns:
             Optimized IR module
         """
-        pipeline = cls.create_pipeline(preset, opt_level)
+        if preset == 'vis_vpu':
+            pipeline = create_visvpu_pipeline(opt_level, enable_fold_constant, enable_fold_scale_axis)
+        else:
+            pipeline = cls.create_pipeline(preset, opt_level)
         return pipeline.apply(mod, visualize=visualize)
 
 
