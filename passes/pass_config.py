@@ -21,6 +21,8 @@ class PassConfig:
     enable_dce: bool = True
     enable_cse: bool = True
     enable_simplify: bool = True
+    enable_fold_constant: bool = False  # Requires LLVM, disabled by default
+    enable_fold_scale_axis: bool = False  # Requires LLVM, disabled by default
     
     # Fusion settings
     fusion_level: int = 3

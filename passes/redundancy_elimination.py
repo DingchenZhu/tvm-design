@@ -9,7 +9,8 @@ Identifies and eliminates:
 
 import tvm
 from tvm import relay
-from tvm.relay import transform, ExprMutator, structural_hash
+from tvm.relay import transform, ExprMutator
+from tvm.ir import structural_hash
 from typing import Dict, Any
 import logging
 

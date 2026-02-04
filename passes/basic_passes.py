@@ -51,12 +51,20 @@ class FoldConstantPass(TVMBuiltinPass):
         
         Args:
             fold_qnn: Whether to fold QNN (quantized) operators
+                     (only supported in TVM v0.11+, ignored in older versions)
         """
+        # Check if fold_qnn parameter is supported by inspecting the function signature
+        import inspect
+        sig = inspect.signature(relay.transform.FoldConstant)
+        kwargs = {}
+        if 'fold_qnn' in sig.parameters:
+            kwargs['fold_qnn'] = fold_qnn
+        
         super().__init__(
             name="FoldConstant",
             pass_func=relay.transform.FoldConstant,
             opt_level=2,
-            fold_qnn=fold_qnn
+            **kwargs
         )
 
 

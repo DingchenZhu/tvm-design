@@ -144,7 +144,9 @@ class TVMVISCompiler:
             mod,
             preset=preset,
             opt_level=self.config.pass_config.opt_level,
-            visualize=self.config.visualize_passes
+            visualize=self.config.visualize_passes,
+            enable_fold_constant=self.config.pass_config.enable_fold_constant,
+            enable_fold_scale_axis=self.config.pass_config.enable_fold_scale_axis
         )
         
         return mod
