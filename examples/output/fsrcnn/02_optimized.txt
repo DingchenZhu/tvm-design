@@ -1,0 +1,345 @@
+#[version = "0.0.5"]
+def @main(%input_0: Tensor[(1, 1, 270, 480), float32]) -> Tensor[(1, 1, 532, 952), float32] {
+  %15 = fn (%p09: Tensor[(32), float32], Primitive=1, relay.reshape_only=1) -> Tensor[(32, 1, 1), float32] {
+    expand_dims(%p09, axis=1, num_newaxis=2) /* ty=Tensor[(32, 1, 1), float32] */
+  };
+  %16 = fn (%p010: Tensor[(32), float32], Primitive=1) -> Tensor[(32), float32] {
+    broadcast_to(%p010, shape=[32], dtype="") /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */ /* ty=Tensor[(32), float32] */
+  };
+  %17 = %15(meta[relay.Constant][1] /* ty=Tensor[(32), float32] */) /* ty=Tensor[(32, 1, 1), float32] */;
+  %18 = %16(meta[relay.Constant][2] /* ty=Tensor[(32), float32] */) /* ty=Tensor[(32), float32] */;
+  %19 = fn (%p08: Tensor[(1, 1, 270, 480), float32], %p17: Tensor[(32, 1, 3, 3), float32], %p27: Tensor[(32, 1, 1), float32], %p36: Tensor[(32), float32], Primitive=1) -> Tensor[(1, 32, 268, 478), float32] {
+    %13 = nn.conv2d(%p08, %p17, padding=[0, 0, 0, 0], channels=32, kernel_size=[3, 3]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */ /* ty=Tensor[(1, 32, 268, 478), float32] */;
+    %14 = add(%13, %p27) /* ty=Tensor[(1, 32, 268, 478), float32] */;
+    nn.prelu(%14, %p36) /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 32, 268, 478), float32] */
+  };
+  %20 = fn (%p011: Tensor[(8), float32], Primitive=1) -> Tensor[(8), float32] {
+    broadcast_to(%p011, shape=[8], dtype="") /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */ /* ty=Tensor[(8), float32] */
+  };
+  %21 = %19(%input_0, meta[relay.Constant][0] /* ty=Tensor[(32, 1, 3, 3), float32] */, %17, %18) /* ty=Tensor[(1, 32, 268, 478), float32] */;
+  %22 = %20(meta[relay.Constant][5] /* ty=Tensor[(8), float32] */) /* ty=Tensor[(8), float32] */;
+  %23 = fn (%p07: Tensor[(1, 32, 268, 478), float32], %p16: Tensor[(8, 32, 1, 1), float32], %p26: Tensor[(8), float32], %p35: Tensor[(8), float32], Primitive=1) -> Tensor[(1, 8, 268, 478), float32] {
+    %10 = nn.conv2d(%p07, %p16, padding=[0, 0, 0, 0], channels=8, kernel_size=[1, 1]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */ /* ty=Tensor[(1, 8, 268, 478), float32] */;
+    %11 = expand_dims(%p26, axis=1, num_newaxis=2) /* ty=Tensor[(8, 1, 1), float32] */;
+    %12 = add(%10, %11) /* ty=Tensor[(1, 8, 268, 478), float32] */;
+    nn.prelu(%12, %p35) /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 8, 268, 478), float32] */
+  };
+  %29 = %23(%21, meta[relay.Constant][3] /* ty=Tensor[(8, 32, 1, 1), float32] */, meta[relay.Constant][4] /* ty=Tensor[(8), float32] */, %22) /* ty=Tensor[(1, 8, 268, 478), float32] */;
+  %30 = fn (%p016: Tensor[(1, 8, 268, 478), float32], Primitive=1) -> Tensor[(1, 8, 268, 478), float32] {
+    nn.avg_pool2d(%p016, pool_size=[1, 1], padding=[0, 0, 0, 0], count_include_pad=True) /* C.graph: aten::avg_pool2d, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 8, 268, 478), float32] */
+  };
+  %31 = %30(%29) /* ty=Tensor[(1, 8, 268, 478), float32] */;
+  %32 = fn (%p015: Tensor[(1, 8, 268, 478), float32], %p110: Tensor[(18, 8, 3, 3), float32], %p210: Tensor[(18), float32], Primitive=1) -> Tensor[(1, 18, 266, 476), float32] {
+    %26 = nn.conv2d(%p015, %p110, padding=[0, 0, 0, 0], channels=18, kernel_size=[3, 3]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */ /* ty=Tensor[(1, 18, 266, 476), float32] */;
+    %27 = expand_dims(%p210, axis=1, num_newaxis=2) /* ty=Tensor[(18, 1, 1), float32] */;
+    %28 = add(%26, %27) /* ty=Tensor[(1, 18, 266, 476), float32] */;
+    clip(%28, a_min=-1f, a_max=1f) /* C.graph: aten::clamp, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 18, 266, 476), float32] */
+  };
+  %33 = %32(%31, meta[relay.Constant][6] /* ty=Tensor[(18, 8, 3, 3), float32] */, meta[relay.Constant][7] /* ty=Tensor[(18), float32] */) /* ty=Tensor[(1, 18, 266, 476), float32] */;
+  %34 = fn (%p014: Tensor[(1, 18, 266, 476), float32], Primitive=1) -> Tensor[(1, 18, 1064, 1904), float32] {
+    %24 = repeat(%p014, repeats=4, axis=2) /* C.graph: aten::repeat_interleave, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 18, 1064, 476), float32] */;
+    %25 = repeat(%24, repeats=4, axis=3) /* C.graph: aten::repeat_interleave, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 18, 1064, 1904), float32] */;
+    nn.pad(%25, 0 /* ty=int32 */, pad_width=[[0, 0], [0, 0], [0, 0], [0, 0]], pad_mode="edge") /* C.graph: aten::pad, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 18, 1064, 1904), float32] */
+  };
+  %38 = %34(%33) /* ty=Tensor[(1, 18, 1064, 1904), float32] */;
+  %39 = fn (%p018: Tensor[(1, 18, 1064, 1904), float32], Primitive=1) -> Tensor[(4), int32] {
+    shape_of(%p018, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_2 */ /* ty=Tensor[(4), int32] */
+  };
+  %40 = fn (%p019: Tensor[(4), int32], Primitive=1) -> Tensor[(4), bool] {
+    less(%p019, 0 /* ty=int32 */) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_1 */ /* ty=Tensor[(4), bool] */
+  };
+  %41 = %39(%38) /* ty=Tensor[(4), int32] */;
+  %42 = %40(meta[relay.Constant][8] /* ty=Tensor[(4), int32] */) /* ty=Tensor[(4), bool] */;
+  %43 = fn (%p017: Tensor[(4), int32], %p111: Tensor[(4), int32], %p211: Tensor[(4), bool], Primitive=1) -> Tensor[(4), int32] {
+    %35 = slice_like(%p017, %p111, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_4 */ /* ty=Tensor[(4), int32] */;
+    %36 = where(%p211, %35, %p111) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_6 */ /* ty=Tensor[(4), int32] */;
+    %37 = greater_equal(%36, %35) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_7 */ /* ty=Tensor[(4), bool] */;
+    where(%37, %35, %36) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_8 */ /* ty=Tensor[(4), int32] */
+  };
+  %44 = fn (%p021: Tensor[(4), int32], Primitive=1) -> Tensor[(4), int64] {
+    cast(%p021, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_10 */ /* ty=Tensor[(4), int64] */
+  };
+  %45 = fn (Primitive=1, relay.reshape_only=1) -> Tensor[(1), int32] {
+    expand_dims(2 /* ty=int32 */, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_11 */ /* ty=Tensor[(1), int32] */
+  };
+  %47 = fn (Primitive=1) -> Tensor[(1), int64] {
+    %46 = cast(268 /* ty=int32 */, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_12 */ /* ty=int64 */;
+    expand_dims(%46, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_13 */ /* ty=Tensor[(1), int64] */
+  };
+  %48 = %44(%41) /* ty=Tensor[(4), int64] */;
+  %49 = %45() /* ty=Tensor[(1), int32] */;
+  %50 = %47() /* ty=Tensor[(1), int64] */;
+  %51 = fn (%p020: Tensor[(4), int64], %p112: Tensor[(1), int32], %p212: Tensor[(1), int64], Primitive=1) -> Tensor[(4), int64] {
+    scatter(%p020, %p112, %p212) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_14 */ /* ty=Tensor[(4), int64] */
+  };
+  %52 = %43(%41, meta[relay.Constant][8] /* ty=Tensor[(4), int32] */, %42) /* ty=Tensor[(4), int32] */;
+  %53 = %51(%48, %49, %50) /* ty=Tensor[(4), int64] */;
+  %54 = fn (%p013: Tensor[(1, 18, 1064, 1904), float32], %p19: Tensor[(4), int32], %p29: Tensor[(4), int64], %p38: Tensor[(4), int32], Primitive=1) -> Tensor[(?, ?, ?, ?), float32] {
+    dyn.strided_slice(%p013, %p19, %p29, %p38, begin=None, end=None, strides=None, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(?, ?, ?, ?), float32] */
+  };
+  %58 = %54(%38, %52, %53, meta[relay.Constant][9] /* ty=Tensor[(4), int32] */) /* ty=Tensor[(?, ?, ?, ?), float32] */;
+  %59 = fn (%p023: Tensor[(?, ?, ?, ?), float32], Primitive=1) -> Tensor[(4), int32] {
+    shape_of(%p023, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_2 */ /* ty=Tensor[(4), int32] */
+  };
+  %60 = %59(%58) /* ty=Tensor[(4), int32] */;
+  %61 = fn (%p022: Tensor[(4), int32], %p113: Tensor[(4), int32], %p213: Tensor[(4), bool], Primitive=1) -> Tensor[(4), int32] {
+    %55 = slice_like(%p022, %p113, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_4 */ /* ty=Tensor[(4), int32] */;
+    %56 = where(%p213, %55, %p113) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_6 */ /* ty=Tensor[(4), int32] */;
+    %57 = greater_equal(%56, %55) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_7 */ /* ty=Tensor[(4), bool] */;
+    where(%57, %55, %56) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_8 */ /* ty=Tensor[(4), int32] */
+  };
+  %62 = fn (%p025: Tensor[(4), int32], Primitive=1) -> Tensor[(4), int64] {
+    cast(%p025, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_10 */ /* ty=Tensor[(4), int64] */
+  };
+  %63 = fn (Primitive=1, relay.reshape_only=1) -> Tensor[(1), int32] {
+    expand_dims(3 /* ty=int32 */, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_11 */ /* ty=Tensor[(1), int32] */
+  };
+  %65 = fn (Primitive=1) -> Tensor[(1), int64] {
+    %64 = cast(478 /* ty=int32 */, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_12 */ /* ty=int64 */;
+    expand_dims(%64, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_13 */ /* ty=Tensor[(1), int64] */
+  };
+  %66 = %62(%60) /* ty=Tensor[(4), int64] */;
+  %67 = %63() /* ty=Tensor[(1), int32] */;
+  %68 = %65() /* ty=Tensor[(1), int64] */;
+  %69 = fn (%p024: Tensor[(4), int64], %p114: Tensor[(1), int32], %p214: Tensor[(1), int64], Primitive=1) -> Tensor[(4), int64] {
+    scatter(%p024, %p114, %p214) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_14 */ /* ty=Tensor[(4), int64] */
+  };
+  %70 = %61(%60, meta[relay.Constant][10] /* ty=Tensor[(4), int32] */, %42) /* ty=Tensor[(4), int32] */;
+  %71 = %69(%66, %67, %68) /* ty=Tensor[(4), int64] */;
+  %72 = fn (%p012: Tensor[(?, ?, ?, ?), float32], %p18: Tensor[(4), int32], %p28: Tensor[(4), int64], %p37: Tensor[(4), int32], Primitive=1) -> Tensor[(?, ?, ?, ?), float32] {
+    dyn.strided_slice(%p012, %p18, %p28, %p37, begin=None, end=None, strides=None, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(?, ?, ?, ?), float32] */
+  };
+  %73 = %72(%58, %70, %71, meta[relay.Constant][11] /* ty=Tensor[(4), int32] */) /* ty=Tensor[(?, ?, ?, ?), float32] */;
+  %74 = fn (%p06: Tensor[(1, 8, 268, 478), float32], %p15: Tensor[(?, ?, ?, ?), float32], %p25: Tensor[(8, 8, 3, 3), float32], %p34: Tensor[(8), float32], Primitive=1) -> Tensor[(1, 8, 268, 478), float32] {
+    %9 = nn.deformable_conv2d(%p06, %p15, %p25, padding=[1, 1, 1, 1], channels=8, kernel_size=[3, 3]) /* C.graph: torchvision::deform_conv2d, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 8, 268, 478), float32] */;
+    nn.prelu(%9, %p34) /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 8, 268, 478), float32] */
+  };
+  %80 = %74(%29, %73, meta[relay.Constant][12] /* ty=Tensor[(8, 8, 3, 3), float32] */, %22) /* ty=Tensor[(1, 8, 268, 478), float32] */;
+  %81 = fn (%p030: Tensor[(1, 8, 268, 478), float32], Primitive=1) -> Tensor[(1, 8, 268, 478), float32] {
+    nn.avg_pool2d(%p030, pool_size=[1, 1], padding=[0, 0, 0, 0], count_include_pad=True) /* C.graph: aten::avg_pool2d, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 8, 268, 478), float32] */
+  };
+  %82 = %81(%80) /* ty=Tensor[(1, 8, 268, 478), float32] */;
+  %83 = fn (%p029: Tensor[(1, 8, 268, 478), float32], %p117: Tensor[(18, 8, 3, 3), float32], %p217: Tensor[(18), float32], Primitive=1) -> Tensor[(1, 18, 266, 476), float32] {
+    %77 = nn.conv2d(%p029, %p117, padding=[0, 0, 0, 0], channels=18, kernel_size=[3, 3]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */ /* ty=Tensor[(1, 18, 266, 476), float32] */;
+    %78 = expand_dims(%p217, axis=1, num_newaxis=2) /* ty=Tensor[(18, 1, 1), float32] */;
+    %79 = add(%77, %78) /* ty=Tensor[(1, 18, 266, 476), float32] */;
+    clip(%79, a_min=-1f, a_max=1f) /* C.graph: aten::clamp, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 18, 266, 476), float32] */
+  };
+  %84 = %83(%82, meta[relay.Constant][13] /* ty=Tensor[(18, 8, 3, 3), float32] */, meta[relay.Constant][14] /* ty=Tensor[(18), float32] */) /* ty=Tensor[(1, 18, 266, 476), float32] */;
+  %85 = fn (%p028: Tensor[(1, 18, 266, 476), float32], Primitive=1) -> Tensor[(1, 18, 1064, 1904), float32] {
+    %75 = repeat(%p028, repeats=4, axis=2) /* C.graph: aten::repeat_interleave, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 18, 1064, 476), float32] */;
+    %76 = repeat(%75, repeats=4, axis=3) /* C.graph: aten::repeat_interleave, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 18, 1064, 1904), float32] */;
+    nn.pad(%76, 0 /* ty=int32 */, pad_width=[[0, 0], [0, 0], [0, 0], [0, 0]], pad_mode="edge") /* C.graph: aten::pad, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 18, 1064, 1904), float32] */
+  };
+  %89 = %85(%84) /* ty=Tensor[(1, 18, 1064, 1904), float32] */;
+  %90 = fn (%p032: Tensor[(1, 18, 1064, 1904), float32], Primitive=1) -> Tensor[(4), int32] {
+    shape_of(%p032, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_2 */ /* ty=Tensor[(4), int32] */
+  };
+  %91 = %90(%89) /* ty=Tensor[(4), int32] */;
+  %92 = fn (%p031: Tensor[(4), int32], %p118: Tensor[(4), int32], %p218: Tensor[(4), bool], Primitive=1) -> Tensor[(4), int32] {
+    %86 = slice_like(%p031, %p118, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_4 */ /* ty=Tensor[(4), int32] */;
+    %87 = where(%p218, %86, %p118) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_6 */ /* ty=Tensor[(4), int32] */;
+    %88 = greater_equal(%87, %86) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_7 */ /* ty=Tensor[(4), bool] */;
+    where(%88, %86, %87) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_8 */ /* ty=Tensor[(4), int32] */
+  };
+  %93 = fn (%p034: Tensor[(4), int32], Primitive=1) -> Tensor[(4), int64] {
+    cast(%p034, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_10 */ /* ty=Tensor[(4), int64] */
+  };
+  %94 = %93(%91) /* ty=Tensor[(4), int64] */;
+  %95 = fn (%p033: Tensor[(4), int64], %p119: Tensor[(1), int32], %p219: Tensor[(1), int64], Primitive=1) -> Tensor[(4), int64] {
+    scatter(%p033, %p119, %p219) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_14 */ /* ty=Tensor[(4), int64] */
+  };
+  %96 = %92(%91, meta[relay.Constant][15] /* ty=Tensor[(4), int32] */, %42) /* ty=Tensor[(4), int32] */;
+  %97 = %95(%94, %49, %50) /* ty=Tensor[(4), int64] */;
+  %98 = fn (%p027: Tensor[(1, 18, 1064, 1904), float32], %p116: Tensor[(4), int32], %p216: Tensor[(4), int64], %p310: Tensor[(4), int32], Primitive=1) -> Tensor[(?, ?, ?, ?), float32] {
+    dyn.strided_slice(%p027, %p116, %p216, %p310, begin=None, end=None, strides=None, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(?, ?, ?, ?), float32] */
+  };
+  %102 = %98(%89, %96, %97, meta[relay.Constant][16] /* ty=Tensor[(4), int32] */) /* ty=Tensor[(?, ?, ?, ?), float32] */;
+  %103 = fn (%p036: Tensor[(?, ?, ?, ?), float32], Primitive=1) -> Tensor[(4), int32] {
+    shape_of(%p036, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_2 */ /* ty=Tensor[(4), int32] */
+  };
+  %104 = %103(%102) /* ty=Tensor[(4), int32] */;
+  %105 = fn (%p035: Tensor[(4), int32], %p120: Tensor[(4), int32], %p220: Tensor[(4), bool], Primitive=1) -> Tensor[(4), int32] {
+    %99 = slice_like(%p035, %p120, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_4 */ /* ty=Tensor[(4), int32] */;
+    %100 = where(%p220, %99, %p120) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_6 */ /* ty=Tensor[(4), int32] */;
+    %101 = greater_equal(%100, %99) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_7 */ /* ty=Tensor[(4), bool] */;
+    where(%101, %99, %100) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_8 */ /* ty=Tensor[(4), int32] */
+  };
+  %106 = fn (%p038: Tensor[(4), int32], Primitive=1) -> Tensor[(4), int64] {
+    cast(%p038, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_10 */ /* ty=Tensor[(4), int64] */
+  };
+  %107 = %106(%104) /* ty=Tensor[(4), int64] */;
+  %108 = fn (%p037: Tensor[(4), int64], %p121: Tensor[(1), int32], %p221: Tensor[(1), int64], Primitive=1) -> Tensor[(4), int64] {
+    scatter(%p037, %p121, %p221) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_14 */ /* ty=Tensor[(4), int64] */
+  };
+  %109 = %105(%104, meta[relay.Constant][17] /* ty=Tensor[(4), int32] */, %42) /* ty=Tensor[(4), int32] */;
+  %110 = %108(%107, %67, %68) /* ty=Tensor[(4), int64] */;
+  %111 = fn (%p026: Tensor[(?, ?, ?, ?), float32], %p115: Tensor[(4), int32], %p215: Tensor[(4), int64], %p39: Tensor[(4), int32], Primitive=1) -> Tensor[(?, ?, ?, ?), float32] {
+    dyn.strided_slice(%p026, %p115, %p215, %p39, begin=None, end=None, strides=None, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(?, ?, ?, ?), float32] */
+  };
+  %112 = %111(%102, %109, %110, meta[relay.Constant][18] /* ty=Tensor[(4), int32] */) /* ty=Tensor[(?, ?, ?, ?), float32] */;
+  %113 = fn (%p05: Tensor[(1, 8, 268, 478), float32], %p14: Tensor[(?, ?, ?, ?), float32], %p24: Tensor[(8, 8, 3, 3), float32], %p33: Tensor[(8), float32], Primitive=1) -> Tensor[(1, 8, 268, 478), float32] {
+    %8 = nn.deformable_conv2d(%p05, %p14, %p24, padding=[1, 1, 1, 1], channels=8, kernel_size=[3, 3]) /* C.graph: torchvision::deform_conv2d, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 8, 268, 478), float32] */;
+    nn.prelu(%8, %p33) /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 8, 268, 478), float32] */
+  };
+  %119 = %113(%80, %112, meta[relay.Constant][19] /* ty=Tensor[(8, 8, 3, 3), float32] */, %22) /* ty=Tensor[(1, 8, 268, 478), float32] */;
+  %120 = fn (%p043: Tensor[(1, 8, 268, 478), float32], Primitive=1) -> Tensor[(1, 8, 268, 478), float32] {
+    nn.avg_pool2d(%p043, pool_size=[1, 1], padding=[0, 0, 0, 0], count_include_pad=True) /* C.graph: aten::avg_pool2d, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 8, 268, 478), float32] */
+  };
+  %121 = %120(%119) /* ty=Tensor[(1, 8, 268, 478), float32] */;
+  %122 = fn (%p042: Tensor[(1, 8, 268, 478), float32], %p124: Tensor[(18, 8, 3, 3), float32], %p224: Tensor[(18), float32], Primitive=1) -> Tensor[(1, 18, 266, 476), float32] {
+    %116 = nn.conv2d(%p042, %p124, padding=[0, 0, 0, 0], channels=18, kernel_size=[3, 3]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */ /* ty=Tensor[(1, 18, 266, 476), float32] */;
+    %117 = expand_dims(%p224, axis=1, num_newaxis=2) /* ty=Tensor[(18, 1, 1), float32] */;
+    %118 = add(%116, %117) /* ty=Tensor[(1, 18, 266, 476), float32] */;
+    clip(%118, a_min=-1f, a_max=1f) /* C.graph: aten::clamp, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 18, 266, 476), float32] */
+  };
+  %123 = %122(%121, meta[relay.Constant][20] /* ty=Tensor[(18, 8, 3, 3), float32] */, meta[relay.Constant][21] /* ty=Tensor[(18), float32] */) /* ty=Tensor[(1, 18, 266, 476), float32] */;
+  %124 = fn (%p041: Tensor[(1, 18, 266, 476), float32], Primitive=1) -> Tensor[(1, 18, 1064, 1904), float32] {
+    %114 = repeat(%p041, repeats=4, axis=2) /* C.graph: aten::repeat_interleave, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 18, 1064, 476), float32] */;
+    %115 = repeat(%114, repeats=4, axis=3) /* C.graph: aten::repeat_interleave, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 18, 1064, 1904), float32] */;
+    nn.pad(%115, 0 /* ty=int32 */, pad_width=[[0, 0], [0, 0], [0, 0], [0, 0]], pad_mode="edge") /* C.graph: aten::pad, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 18, 1064, 1904), float32] */
+  };
+  %128 = %124(%123) /* ty=Tensor[(1, 18, 1064, 1904), float32] */;
+  %129 = fn (%p045: Tensor[(1, 18, 1064, 1904), float32], Primitive=1) -> Tensor[(4), int32] {
+    shape_of(%p045, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_2 */ /* ty=Tensor[(4), int32] */
+  };
+  %130 = %129(%128) /* ty=Tensor[(4), int32] */;
+  %131 = fn (%p044: Tensor[(4), int32], %p125: Tensor[(4), int32], %p225: Tensor[(4), bool], Primitive=1) -> Tensor[(4), int32] {
+    %125 = slice_like(%p044, %p125, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_4 */ /* ty=Tensor[(4), int32] */;
+    %126 = where(%p225, %125, %p125) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_6 */ /* ty=Tensor[(4), int32] */;
+    %127 = greater_equal(%126, %125) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_7 */ /* ty=Tensor[(4), bool] */;
+    where(%127, %125, %126) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_8 */ /* ty=Tensor[(4), int32] */
+  };
+  %132 = fn (%p047: Tensor[(4), int32], Primitive=1) -> Tensor[(4), int64] {
+    cast(%p047, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_10 */ /* ty=Tensor[(4), int64] */
+  };
+  %133 = %132(%130) /* ty=Tensor[(4), int64] */;
+  %134 = fn (%p046: Tensor[(4), int64], %p126: Tensor[(1), int32], %p226: Tensor[(1), int64], Primitive=1) -> Tensor[(4), int64] {
+    scatter(%p046, %p126, %p226) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_14 */ /* ty=Tensor[(4), int64] */
+  };
+  %135 = %131(%130, meta[relay.Constant][22] /* ty=Tensor[(4), int32] */, %42) /* ty=Tensor[(4), int32] */;
+  %136 = %134(%133, %49, %50) /* ty=Tensor[(4), int64] */;
+  %137 = fn (%p040: Tensor[(1, 18, 1064, 1904), float32], %p123: Tensor[(4), int32], %p223: Tensor[(4), int64], %p312: Tensor[(4), int32], Primitive=1) -> Tensor[(?, ?, ?, ?), float32] {
+    dyn.strided_slice(%p040, %p123, %p223, %p312, begin=None, end=None, strides=None, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(?, ?, ?, ?), float32] */
+  };
+  %141 = %137(%128, %135, %136, meta[relay.Constant][23] /* ty=Tensor[(4), int32] */) /* ty=Tensor[(?, ?, ?, ?), float32] */;
+  %142 = fn (%p049: Tensor[(?, ?, ?, ?), float32], Primitive=1) -> Tensor[(4), int32] {
+    shape_of(%p049, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_2 */ /* ty=Tensor[(4), int32] */
+  };
+  %143 = %142(%141) /* ty=Tensor[(4), int32] */;
+  %144 = fn (%p048: Tensor[(4), int32], %p127: Tensor[(4), int32], %p227: Tensor[(4), bool], Primitive=1) -> Tensor[(4), int32] {
+    %138 = slice_like(%p048, %p127, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_4 */ /* ty=Tensor[(4), int32] */;
+    %139 = where(%p227, %138, %p127) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_6 */ /* ty=Tensor[(4), int32] */;
+    %140 = greater_equal(%139, %138) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_7 */ /* ty=Tensor[(4), bool] */;
+    where(%140, %138, %139) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_8 */ /* ty=Tensor[(4), int32] */
+  };
+  %145 = fn (%p051: Tensor[(4), int32], Primitive=1) -> Tensor[(4), int64] {
+    cast(%p051, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_10 */ /* ty=Tensor[(4), int64] */
+  };
+  %146 = %145(%143) /* ty=Tensor[(4), int64] */;
+  %147 = fn (%p050: Tensor[(4), int64], %p128: Tensor[(1), int32], %p228: Tensor[(1), int64], Primitive=1) -> Tensor[(4), int64] {
+    scatter(%p050, %p128, %p228) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_14 */ /* ty=Tensor[(4), int64] */
+  };
+  %148 = %144(%143, meta[relay.Constant][24] /* ty=Tensor[(4), int32] */, %42) /* ty=Tensor[(4), int32] */;
+  %149 = %147(%146, %67, %68) /* ty=Tensor[(4), int64] */;
+  %150 = fn (%p039: Tensor[(?, ?, ?, ?), float32], %p122: Tensor[(4), int32], %p222: Tensor[(4), int64], %p311: Tensor[(4), int32], Primitive=1) -> Tensor[(?, ?, ?, ?), float32] {
+    dyn.strided_slice(%p039, %p122, %p222, %p311, begin=None, end=None, strides=None, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(?, ?, ?, ?), float32] */
+  };
+  %151 = %150(%141, %148, %149, meta[relay.Constant][25] /* ty=Tensor[(4), int32] */) /* ty=Tensor[(?, ?, ?, ?), float32] */;
+  %152 = fn (%p04: Tensor[(1, 8, 268, 478), float32], %p13: Tensor[(?, ?, ?, ?), float32], %p23: Tensor[(8, 8, 3, 3), float32], %p32: Tensor[(8), float32], Primitive=1) -> Tensor[(1, 8, 268, 478), float32] {
+    %7 = nn.deformable_conv2d(%p04, %p13, %p23, padding=[1, 1, 1, 1], channels=8, kernel_size=[3, 3]) /* C.graph: torchvision::deform_conv2d, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 8, 268, 478), float32] */;
+    nn.prelu(%7, %p32) /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 8, 268, 478), float32] */
+  };
+  %158 = %152(%119, %151, meta[relay.Constant][26] /* ty=Tensor[(8, 8, 3, 3), float32] */, %22) /* ty=Tensor[(1, 8, 268, 478), float32] */;
+  %159 = fn (%p056: Tensor[(1, 8, 268, 478), float32], Primitive=1) -> Tensor[(1, 8, 268, 478), float32] {
+    nn.avg_pool2d(%p056, pool_size=[1, 1], padding=[0, 0, 0, 0], count_include_pad=True) /* C.graph: aten::avg_pool2d, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 8, 268, 478), float32] */
+  };
+  %160 = %159(%158) /* ty=Tensor[(1, 8, 268, 478), float32] */;
+  %161 = fn (%p055: Tensor[(1, 8, 268, 478), float32], %p131: Tensor[(18, 8, 3, 3), float32], %p231: Tensor[(18), float32], Primitive=1) -> Tensor[(1, 18, 266, 476), float32] {
+    %155 = nn.conv2d(%p055, %p131, padding=[0, 0, 0, 0], channels=18, kernel_size=[3, 3]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */ /* ty=Tensor[(1, 18, 266, 476), float32] */;
+    %156 = expand_dims(%p231, axis=1, num_newaxis=2) /* ty=Tensor[(18, 1, 1), float32] */;
+    %157 = add(%155, %156) /* ty=Tensor[(1, 18, 266, 476), float32] */;
+    clip(%157, a_min=-1f, a_max=1f) /* C.graph: aten::clamp, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 18, 266, 476), float32] */
+  };
+  %162 = %161(%160, meta[relay.Constant][27] /* ty=Tensor[(18, 8, 3, 3), float32] */, meta[relay.Constant][28] /* ty=Tensor[(18), float32] */) /* ty=Tensor[(1, 18, 266, 476), float32] */;
+  %163 = fn (%p054: Tensor[(1, 18, 266, 476), float32], Primitive=1) -> Tensor[(1, 18, 1064, 1904), float32] {
+    %153 = repeat(%p054, repeats=4, axis=2) /* C.graph: aten::repeat_interleave, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 18, 1064, 476), float32] */;
+    %154 = repeat(%153, repeats=4, axis=3) /* C.graph: aten::repeat_interleave, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 18, 1064, 1904), float32] */;
+    nn.pad(%154, 0 /* ty=int32 */, pad_width=[[0, 0], [0, 0], [0, 0], [0, 0]], pad_mode="edge") /* C.graph: aten::pad, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 18, 1064, 1904), float32] */
+  };
+  %167 = %163(%162) /* ty=Tensor[(1, 18, 1064, 1904), float32] */;
+  %168 = fn (%p058: Tensor[(1, 18, 1064, 1904), float32], Primitive=1) -> Tensor[(4), int32] {
+    shape_of(%p058, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_2 */ /* ty=Tensor[(4), int32] */
+  };
+  %169 = %168(%167) /* ty=Tensor[(4), int32] */;
+  %170 = fn (%p057: Tensor[(4), int32], %p132: Tensor[(4), int32], %p232: Tensor[(4), bool], Primitive=1) -> Tensor[(4), int32] {
+    %164 = slice_like(%p057, %p132, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_4 */ /* ty=Tensor[(4), int32] */;
+    %165 = where(%p232, %164, %p132) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_6 */ /* ty=Tensor[(4), int32] */;
+    %166 = greater_equal(%165, %164) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_7 */ /* ty=Tensor[(4), bool] */;
+    where(%166, %164, %165) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_8 */ /* ty=Tensor[(4), int32] */
+  };
+  %171 = fn (%p060: Tensor[(4), int32], Primitive=1) -> Tensor[(4), int64] {
+    cast(%p060, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_10 */ /* ty=Tensor[(4), int64] */
+  };
+  %172 = %171(%169) /* ty=Tensor[(4), int64] */;
+  %173 = fn (%p059: Tensor[(4), int64], %p133: Tensor[(1), int32], %p233: Tensor[(1), int64], Primitive=1) -> Tensor[(4), int64] {
+    scatter(%p059, %p133, %p233) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_14 */ /* ty=Tensor[(4), int64] */
+  };
+  %174 = %170(%169, meta[relay.Constant][29] /* ty=Tensor[(4), int32] */, %42) /* ty=Tensor[(4), int32] */;
+  %175 = %173(%172, %49, %50) /* ty=Tensor[(4), int64] */;
+  %176 = fn (%p053: Tensor[(1, 18, 1064, 1904), float32], %p130: Tensor[(4), int32], %p230: Tensor[(4), int64], %p314: Tensor[(4), int32], Primitive=1) -> Tensor[(?, ?, ?, ?), float32] {
+    dyn.strided_slice(%p053, %p130, %p230, %p314, begin=None, end=None, strides=None, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(?, ?, ?, ?), float32] */
+  };
+  %180 = %176(%167, %174, %175, meta[relay.Constant][30] /* ty=Tensor[(4), int32] */) /* ty=Tensor[(?, ?, ?, ?), float32] */;
+  %181 = fn (%p062: Tensor[(?, ?, ?, ?), float32], Primitive=1) -> Tensor[(4), int32] {
+    shape_of(%p062, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_2 */ /* ty=Tensor[(4), int32] */
+  };
+  %182 = %181(%180) /* ty=Tensor[(4), int32] */;
+  %183 = fn (%p061: Tensor[(4), int32], %p134: Tensor[(4), int32], %p234: Tensor[(4), bool], Primitive=1) -> Tensor[(4), int32] {
+    %177 = slice_like(%p061, %p134, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_4 */ /* ty=Tensor[(4), int32] */;
+    %178 = where(%p234, %177, %p134) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_6 */ /* ty=Tensor[(4), int32] */;
+    %179 = greater_equal(%178, %177) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_7 */ /* ty=Tensor[(4), bool] */;
+    where(%179, %177, %178) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_8 */ /* ty=Tensor[(4), int32] */
+  };
+  %184 = fn (%p064: Tensor[(4), int32], Primitive=1) -> Tensor[(4), int64] {
+    cast(%p064, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_10 */ /* ty=Tensor[(4), int64] */
+  };
+  %185 = %184(%182) /* ty=Tensor[(4), int64] */;
+  %186 = fn (%p063: Tensor[(4), int64], %p135: Tensor[(1), int32], %p235: Tensor[(1), int64], Primitive=1) -> Tensor[(4), int64] {
+    scatter(%p063, %p135, %p235) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_14 */ /* ty=Tensor[(4), int64] */
+  };
+  %187 = %183(%182, meta[relay.Constant][31] /* ty=Tensor[(4), int32] */, %42) /* ty=Tensor[(4), int32] */;
+  %188 = %186(%185, %67, %68) /* ty=Tensor[(4), int64] */;
+  %189 = fn (%p052: Tensor[(?, ?, ?, ?), float32], %p129: Tensor[(4), int32], %p229: Tensor[(4), int64], %p313: Tensor[(4), int32], Primitive=1) -> Tensor[(?, ?, ?, ?), float32] {
+    dyn.strided_slice(%p052, %p129, %p229, %p313, begin=None, end=None, strides=None, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(?, ?, ?, ?), float32] */
+  };
+  %190 = %189(%180, %187, %188, meta[relay.Constant][32] /* ty=Tensor[(4), int32] */) /* ty=Tensor[(?, ?, ?, ?), float32] */;
+  %191 = fn (%p03: Tensor[(1, 8, 268, 478), float32], %p12: Tensor[(?, ?, ?, ?), float32], %p22: Tensor[(8, 8, 3, 3), float32], %p31: Tensor[(8), float32], Primitive=1) -> Tensor[(1, 8, 268, 478), float32] {
+    %6 = nn.deformable_conv2d(%p03, %p12, %p22, padding=[1, 1, 1, 1], channels=8, kernel_size=[3, 3]) /* C.graph: torchvision::deform_conv2d, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 8, 268, 478), float32] */;
+    nn.prelu(%6, %p31) /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 8, 268, 478), float32] */
+  };
+  %192 = %191(%158, %190, meta[relay.Constant][33] /* ty=Tensor[(8, 8, 3, 3), float32] */, %22) /* ty=Tensor[(1, 8, 268, 478), float32] */;
+  %193 = fn (%p02: Tensor[(1, 8, 268, 478), float32], %p11: Tensor[(32, 8, 1, 1), float32], %p21: Tensor[(32, 1, 1), float32], %p3: Tensor[(32), float32], Primitive=1) -> Tensor[(1, 32, 268, 478), float32] {
+    %4 = nn.conv2d(%p02, %p11, padding=[0, 0, 0, 0], channels=32, kernel_size=[1, 1]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */ /* ty=Tensor[(1, 32, 268, 478), float32] */;
+    %5 = add(%4, %p21) /* ty=Tensor[(1, 32, 268, 478), float32] */;
+    nn.prelu(%5, %p3) /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 32, 268, 478), float32] */
+  };
+  %194 = %193(%192, meta[relay.Constant][34] /* ty=Tensor[(32, 8, 1, 1), float32] */, %17, %18) /* ty=Tensor[(1, 32, 268, 478), float32] */;
+  %195 = fn (%p01: Tensor[(1, 32, 268, 478), float32], %p1: Tensor[(4, 32, 3, 3), float32], %p2: Tensor[(4), float32], Primitive=1) -> Tensor[(1, 4, 266, 476), float32] {
+    %2 = nn.conv2d(%p01, %p1, padding=[0, 0, 0, 0], channels=4, kernel_size=[3, 3]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */ /* ty=Tensor[(1, 4, 266, 476), float32] */;
+    %3 = expand_dims(%p2, axis=1, num_newaxis=2) /* ty=Tensor[(4, 1, 1), float32] */;
+    add(%2, %3) /* ty=Tensor[(1, 4, 266, 476), float32] */
+  };
+  %196 = %195(%194, meta[relay.Constant][35] /* ty=Tensor[(4, 32, 3, 3), float32] */, meta[relay.Constant][36] /* ty=Tensor[(4), float32] */) /* ty=Tensor[(1, 4, 266, 476), float32] */;
+  %197 = fn (%p0: Tensor[(1, 4, 266, 476), float32], Primitive=1) -> Tensor[(1, 1, 532, 952), float32] {
+    %0 = reshape(%p0, newshape=[1, 1, 2, 2, 266, 476]) /* C.graph: aten::pixel_shuffle, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */ /* ty=Tensor[(1, 1, 2, 2, 266, 476), float32] */;
+    %1 = transpose(%0, axes=[0, 1, 4, 2, 5, 3]) /* C.graph: aten::pixel_shuffle, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_1 */ /* ty=Tensor[(1, 1, 266, 2, 476, 2), float32] */;
+    reshape(%1, newshape=[1, 1, 532, 952]) /* C.graph: aten::pixel_shuffle, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */ /* ty=Tensor[(1, 1, 532, 952), float32] */
+  };
+  %197(%196) /* ty=Tensor[(1, 1, 532, 952), float32] */
+}
+
+/* For debugging purposes the metadata section has been omitted.
+ * If you would like to see the full metadata section you can set the 
+ * option to `True` when invoking `astext`. 
+ */

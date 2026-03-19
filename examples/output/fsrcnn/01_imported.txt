@@ -1,0 +1,306 @@
+#[version = "0.0.5"]
+type tensor_float32_t {
+  tensor_nil_float32,
+  tensor0_float32(float32),
+  tensor1_float32(Tensor[(?), float32]),
+  tensor2_float32(Tensor[(?, ?), float32]),
+  tensor3_float32(Tensor[(?, ?, ?), float32]),
+  tensor4_float32(Tensor[(?, ?, ?, ?), float32]),
+  tensor5_float32(Tensor[(?, ?, ?, ?, ?), float32]),
+  tensor6_float32(Tensor[(?, ?, ?, ?, ?, ?), float32]),
+}
+
+type tensor_int32_t {
+  tensor_nil_int32,
+  tensor0_int32(int32),
+  tensor1_int32(Tensor[(?), int32]),
+  tensor2_int32(Tensor[(?, ?), int32]),
+  tensor3_int32(Tensor[(?, ?, ?), int32]),
+  tensor4_int32(Tensor[(?, ?, ?, ?), int32]),
+  tensor5_int32(Tensor[(?, ?, ?, ?, ?), int32]),
+  tensor6_int32(Tensor[(?, ?, ?, ?, ?, ?), int32]),
+}
+
+type tensor_uint16_t {
+  tensor_nil_uint16,
+  tensor0_uint16(uint16),
+  tensor1_uint16(Tensor[(?), uint16]),
+  tensor2_uint16(Tensor[(?, ?), uint16]),
+  tensor3_uint16(Tensor[(?, ?, ?), uint16]),
+  tensor4_uint16(Tensor[(?, ?, ?, ?), uint16]),
+  tensor5_uint16(Tensor[(?, ?, ?, ?, ?), uint16]),
+  tensor6_uint16(Tensor[(?, ?, ?, ?, ?, ?), uint16]),
+}
+
+type tensor_int16_t {
+  tensor_nil_int16,
+  tensor0_int16(int16),
+  tensor1_int16(Tensor[(?), int16]),
+  tensor2_int16(Tensor[(?, ?), int16]),
+  tensor3_int16(Tensor[(?, ?, ?), int16]),
+  tensor4_int16(Tensor[(?, ?, ?, ?), int16]),
+  tensor5_int16(Tensor[(?, ?, ?, ?, ?), int16]),
+  tensor6_int16(Tensor[(?, ?, ?, ?, ?, ?), int16]),
+}
+
+type tensor_int8_t {
+  tensor_nil_int8,
+  tensor0_int8(int8),
+  tensor1_int8(Tensor[(?), int8]),
+  tensor2_int8(Tensor[(?, ?), int8]),
+  tensor3_int8(Tensor[(?, ?, ?), int8]),
+  tensor4_int8(Tensor[(?, ?, ?, ?), int8]),
+  tensor5_int8(Tensor[(?, ?, ?, ?, ?), int8]),
+  tensor6_int8(Tensor[(?, ?, ?, ?, ?, ?), int8]),
+}
+
+type tensor_float16_t {
+  tensor_nil_float16,
+  tensor0_float16(float16),
+  tensor1_float16(Tensor[(?), float16]),
+  tensor2_float16(Tensor[(?, ?), float16]),
+  tensor3_float16(Tensor[(?, ?, ?), float16]),
+  tensor4_float16(Tensor[(?, ?, ?, ?), float16]),
+  tensor5_float16(Tensor[(?, ?, ?, ?, ?), float16]),
+  tensor6_float16(Tensor[(?, ?, ?, ?, ?, ?), float16]),
+}
+
+type tensor_float64_t {
+  tensor_nil_float64,
+  tensor0_float64(float64),
+  tensor1_float64(Tensor[(?), float64]),
+  tensor2_float64(Tensor[(?, ?), float64]),
+  tensor3_float64(Tensor[(?, ?, ?), float64]),
+  tensor4_float64(Tensor[(?, ?, ?, ?), float64]),
+  tensor5_float64(Tensor[(?, ?, ?, ?, ?), float64]),
+  tensor6_float64(Tensor[(?, ?, ?, ?, ?, ?), float64]),
+}
+
+type tensor_uint8_t {
+  tensor_nil_uint8,
+  tensor0_uint8(uint8),
+  tensor1_uint8(Tensor[(?), uint8]),
+  tensor2_uint8(Tensor[(?, ?), uint8]),
+  tensor3_uint8(Tensor[(?, ?, ?), uint8]),
+  tensor4_uint8(Tensor[(?, ?, ?, ?), uint8]),
+  tensor5_uint8(Tensor[(?, ?, ?, ?, ?), uint8]),
+  tensor6_uint8(Tensor[(?, ?, ?, ?, ?, ?), uint8]),
+}
+
+type tensor_int64_t {
+  tensor_nil_int64,
+  tensor0_int64(int64),
+  tensor1_int64(Tensor[(?), int64]),
+  tensor2_int64(Tensor[(?, ?), int64]),
+  tensor3_int64(Tensor[(?, ?, ?), int64]),
+  tensor4_int64(Tensor[(?, ?, ?, ?), int64]),
+  tensor5_int64(Tensor[(?, ?, ?, ?, ?), int64]),
+  tensor6_int64(Tensor[(?, ?, ?, ?, ?, ?), int64]),
+}
+
+type Tree[A] {
+  Rose(A, List[Tree[A]]),
+}
+
+type List[A] {
+  Cons(A, List[A]),
+  Nil,
+}
+
+type Option[A] {
+  Some(A),
+  None,
+}
+
+def @main(%input_0: Tensor[(1, 1, 270, 480), float32]) {
+  %0 = nn.conv2d(%input_0, meta[relay.Constant][0], padding=[0, 0, 0, 0], channels=32, kernel_size=[3, 3]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %1 = nn.bias_add(%0, meta[relay.Constant][1]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %2 = broadcast_to(meta[relay.Constant][2], shape=[32], dtype="") /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %3 = nn.prelu(%1, %2) /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %4 = nn.conv2d(%3, meta[relay.Constant][3], padding=[0, 0, 0, 0], channels=8, kernel_size=[1, 1]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %5 = nn.bias_add(%4, meta[relay.Constant][4]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %6 = broadcast_to(meta[relay.Constant][5], shape=[8], dtype="") /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %7 = nn.prelu(%5, %6) /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %8 = nn.avg_pool2d(%7, pool_size=[1, 1], padding=[0, 0, 0, 0], count_include_pad=True) /* C.graph: aten::avg_pool2d, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %9 = nn.conv2d(%8, meta[relay.Constant][6], padding=[0, 0, 0, 0], channels=18, kernel_size=[3, 3]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %10 = nn.bias_add(%9, meta[relay.Constant][7]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %11 = clip(%10, a_min=-1f, a_max=1f) /* C.graph: aten::clamp, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %12 = repeat(%11, repeats=4, axis=2) /* C.graph: aten::repeat_interleave, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %13 = repeat(%12, repeats=4, axis=3) /* C.graph: aten::repeat_interleave, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %14 = cast_like(0, meta[relay.Constant][8]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %15 = nn.pad(%13, 0, pad_width=[[0, 0], [0, 0], [0, 0], [0, 0]], pad_mode="edge") /* C.graph: aten::pad, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %16 = shape_of(%15, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_2 */;
+  %17 = cast_like(%16, meta[relay.Constant][8]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_3 */;
+  %18 = slice_like(%17, meta[relay.Constant][8], axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_4 */;
+  %19 = less(meta[relay.Constant][8], %14) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_1 */;
+  %20 = add(meta[relay.Constant][8], %18) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_5 */;
+  %21 = where(%19, %20, meta[relay.Constant][8]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_6 */;
+  %22 = greater_equal(%21, %18) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_7 */;
+  %23 = shape_of(%15, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_9 */;
+  %24 = cast(268, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_12 */;
+  %25 = cast(%23, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_10 */;
+  %26 = expand_dims(2, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_11 */;
+  %27 = expand_dims(%24, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_13 */;
+  %28 = where(%22, %18, %21) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_8 */;
+  %29 = scatter(%25, %26, %27) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_14 */;
+  %30 = cast_like(0, meta[relay.Constant][10]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %31 = dyn.strided_slice(%15, %28, %29, meta[relay.Constant][9], begin=None, end=None, strides=None, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %32 = shape_of(%31, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_2 */;
+  %33 = cast_like(%32, meta[relay.Constant][10]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_3 */;
+  %34 = slice_like(%33, meta[relay.Constant][10], axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_4 */;
+  %35 = less(meta[relay.Constant][10], %30) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_1 */;
+  %36 = add(meta[relay.Constant][10], %34) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_5 */;
+  %37 = where(%35, %36, meta[relay.Constant][10]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_6 */;
+  %38 = greater_equal(%37, %34) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_7 */;
+  %39 = shape_of(%31, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_9 */;
+  %40 = cast(478, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_12 */;
+  %41 = cast(%39, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_10 */;
+  %42 = expand_dims(3, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_11 */;
+  %43 = expand_dims(%40, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_13 */;
+  %44 = where(%38, %34, %37) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_8 */;
+  %45 = scatter(%41, %42, %43) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_14 */;
+  %46 = dyn.strided_slice(%31, %44, %45, meta[relay.Constant][11], begin=None, end=None, strides=None, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %47 = nn.deformable_conv2d(%7, %46, meta[relay.Constant][12], padding=[1, 1, 1, 1], channels=8, kernel_size=[3, 3]) /* C.graph: torchvision::deform_conv2d, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %48 = broadcast_to(meta[relay.Constant][5], shape=[8], dtype="") /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %49 = nn.prelu(%47, %48) /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %50 = nn.avg_pool2d(%49, pool_size=[1, 1], padding=[0, 0, 0, 0], count_include_pad=True) /* C.graph: aten::avg_pool2d, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %51 = nn.conv2d(%50, meta[relay.Constant][13], padding=[0, 0, 0, 0], channels=18, kernel_size=[3, 3]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %52 = nn.bias_add(%51, meta[relay.Constant][14]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %53 = clip(%52, a_min=-1f, a_max=1f) /* C.graph: aten::clamp, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %54 = repeat(%53, repeats=4, axis=2) /* C.graph: aten::repeat_interleave, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %55 = repeat(%54, repeats=4, axis=3) /* C.graph: aten::repeat_interleave, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %56 = cast_like(0, meta[relay.Constant][15]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %57 = nn.pad(%55, 0, pad_width=[[0, 0], [0, 0], [0, 0], [0, 0]], pad_mode="edge") /* C.graph: aten::pad, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %58 = shape_of(%57, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_2 */;
+  %59 = cast_like(%58, meta[relay.Constant][15]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_3 */;
+  %60 = slice_like(%59, meta[relay.Constant][15], axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_4 */;
+  %61 = less(meta[relay.Constant][15], %56) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_1 */;
+  %62 = add(meta[relay.Constant][15], %60) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_5 */;
+  %63 = where(%61, %62, meta[relay.Constant][15]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_6 */;
+  %64 = greater_equal(%63, %60) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_7 */;
+  %65 = shape_of(%57, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_9 */;
+  %66 = cast(268, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_12 */;
+  %67 = cast(%65, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_10 */;
+  %68 = expand_dims(2, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_11 */;
+  %69 = expand_dims(%66, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_13 */;
+  %70 = where(%64, %60, %63) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_8 */;
+  %71 = scatter(%67, %68, %69) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_14 */;
+  %72 = cast_like(0, meta[relay.Constant][17]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %73 = dyn.strided_slice(%57, %70, %71, meta[relay.Constant][16], begin=None, end=None, strides=None, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %74 = shape_of(%73, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_2 */;
+  %75 = cast_like(%74, meta[relay.Constant][17]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_3 */;
+  %76 = slice_like(%75, meta[relay.Constant][17], axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_4 */;
+  %77 = less(meta[relay.Constant][17], %72) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_1 */;
+  %78 = add(meta[relay.Constant][17], %76) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_5 */;
+  %79 = where(%77, %78, meta[relay.Constant][17]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_6 */;
+  %80 = greater_equal(%79, %76) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_7 */;
+  %81 = shape_of(%73, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_9 */;
+  %82 = cast(478, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_12 */;
+  %83 = cast(%81, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_10 */;
+  %84 = expand_dims(3, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_11 */;
+  %85 = expand_dims(%82, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_13 */;
+  %86 = where(%80, %76, %79) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_8 */;
+  %87 = scatter(%83, %84, %85) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_14 */;
+  %88 = dyn.strided_slice(%73, %86, %87, meta[relay.Constant][18], begin=None, end=None, strides=None, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %89 = nn.deformable_conv2d(%49, %88, meta[relay.Constant][19], padding=[1, 1, 1, 1], channels=8, kernel_size=[3, 3]) /* C.graph: torchvision::deform_conv2d, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %90 = broadcast_to(meta[relay.Constant][5], shape=[8], dtype="") /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %91 = nn.prelu(%89, %90) /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %92 = nn.avg_pool2d(%91, pool_size=[1, 1], padding=[0, 0, 0, 0], count_include_pad=True) /* C.graph: aten::avg_pool2d, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %93 = nn.conv2d(%92, meta[relay.Constant][20], padding=[0, 0, 0, 0], channels=18, kernel_size=[3, 3]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %94 = nn.bias_add(%93, meta[relay.Constant][21]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %95 = clip(%94, a_min=-1f, a_max=1f) /* C.graph: aten::clamp, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %96 = repeat(%95, repeats=4, axis=2) /* C.graph: aten::repeat_interleave, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %97 = repeat(%96, repeats=4, axis=3) /* C.graph: aten::repeat_interleave, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %98 = cast_like(0, meta[relay.Constant][22]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %99 = nn.pad(%97, 0, pad_width=[[0, 0], [0, 0], [0, 0], [0, 0]], pad_mode="edge") /* C.graph: aten::pad, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %100 = shape_of(%99, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_2 */;
+  %101 = cast_like(%100, meta[relay.Constant][22]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_3 */;
+  %102 = slice_like(%101, meta[relay.Constant][22], axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_4 */;
+  %103 = less(meta[relay.Constant][22], %98) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_1 */;
+  %104 = add(meta[relay.Constant][22], %102) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_5 */;
+  %105 = where(%103, %104, meta[relay.Constant][22]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_6 */;
+  %106 = greater_equal(%105, %102) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_7 */;
+  %107 = shape_of(%99, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_9 */;
+  %108 = cast(268, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_12 */;
+  %109 = cast(%107, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_10 */;
+  %110 = expand_dims(2, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_11 */;
+  %111 = expand_dims(%108, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_13 */;
+  %112 = where(%106, %102, %105) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_8 */;
+  %113 = scatter(%109, %110, %111) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_14 */;
+  %114 = cast_like(0, meta[relay.Constant][24]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %115 = dyn.strided_slice(%99, %112, %113, meta[relay.Constant][23], begin=None, end=None, strides=None, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %116 = shape_of(%115, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_2 */;
+  %117 = cast_like(%116, meta[relay.Constant][24]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_3 */;
+  %118 = slice_like(%117, meta[relay.Constant][24], axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_4 */;
+  %119 = less(meta[relay.Constant][24], %114) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_1 */;
+  %120 = add(meta[relay.Constant][24], %118) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_5 */;
+  %121 = where(%119, %120, meta[relay.Constant][24]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_6 */;
+  %122 = greater_equal(%121, %118) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_7 */;
+  %123 = shape_of(%115, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_9 */;
+  %124 = cast(478, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_12 */;
+  %125 = cast(%123, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_10 */;
+  %126 = expand_dims(3, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_11 */;
+  %127 = expand_dims(%124, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_13 */;
+  %128 = where(%122, %118, %121) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_8 */;
+  %129 = scatter(%125, %126, %127) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_14 */;
+  %130 = dyn.strided_slice(%115, %128, %129, meta[relay.Constant][25], begin=None, end=None, strides=None, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %131 = nn.deformable_conv2d(%91, %130, meta[relay.Constant][26], padding=[1, 1, 1, 1], channels=8, kernel_size=[3, 3]) /* C.graph: torchvision::deform_conv2d, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %132 = broadcast_to(meta[relay.Constant][5], shape=[8], dtype="") /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %133 = nn.prelu(%131, %132) /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %134 = nn.avg_pool2d(%133, pool_size=[1, 1], padding=[0, 0, 0, 0], count_include_pad=True) /* C.graph: aten::avg_pool2d, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %135 = nn.conv2d(%134, meta[relay.Constant][27], padding=[0, 0, 0, 0], channels=18, kernel_size=[3, 3]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %136 = nn.bias_add(%135, meta[relay.Constant][28]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %137 = clip(%136, a_min=-1f, a_max=1f) /* C.graph: aten::clamp, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %138 = repeat(%137, repeats=4, axis=2) /* C.graph: aten::repeat_interleave, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %139 = repeat(%138, repeats=4, axis=3) /* C.graph: aten::repeat_interleave, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %140 = cast_like(0, meta[relay.Constant][29]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %141 = nn.pad(%139, 0, pad_width=[[0, 0], [0, 0], [0, 0], [0, 0]], pad_mode="edge") /* C.graph: aten::pad, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %142 = shape_of(%141, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_2 */;
+  %143 = cast_like(%142, meta[relay.Constant][29]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_3 */;
+  %144 = slice_like(%143, meta[relay.Constant][29], axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_4 */;
+  %145 = less(meta[relay.Constant][29], %140) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_1 */;
+  %146 = add(meta[relay.Constant][29], %144) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_5 */;
+  %147 = where(%145, %146, meta[relay.Constant][29]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_6 */;
+  %148 = greater_equal(%147, %144) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_7 */;
+  %149 = shape_of(%141, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_9 */;
+  %150 = cast(268, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_12 */;
+  %151 = cast(%149, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_10 */;
+  %152 = expand_dims(2, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_11 */;
+  %153 = expand_dims(%150, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_13 */;
+  %154 = where(%148, %144, %147) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_8 */;
+  %155 = scatter(%151, %152, %153) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_14 */;
+  %156 = cast_like(0, meta[relay.Constant][31]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %157 = dyn.strided_slice(%141, %154, %155, meta[relay.Constant][30], begin=None, end=None, strides=None, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %158 = shape_of(%157, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_2 */;
+  %159 = cast_like(%158, meta[relay.Constant][31]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_3 */;
+  %160 = slice_like(%159, meta[relay.Constant][31], axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_4 */;
+  %161 = less(meta[relay.Constant][31], %156) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_1 */;
+  %162 = add(meta[relay.Constant][31], %160) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_5 */;
+  %163 = where(%161, %162, meta[relay.Constant][31]) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_6 */;
+  %164 = greater_equal(%163, %160) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_7 */;
+  %165 = shape_of(%157, dtype="int32") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_9 */;
+  %166 = cast(478, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_12 */;
+  %167 = cast(%165, dtype="int64") /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_10 */;
+  %168 = expand_dims(3, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_11 */;
+  %169 = expand_dims(%166, axis=0) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_13 */;
+  %170 = where(%164, %160, %163) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_8 */;
+  %171 = scatter(%167, %168, %169) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_14 */;
+  %172 = dyn.strided_slice(%157, %170, %171, meta[relay.Constant][32], begin=None, end=None, strides=None, axes=None) /* C.graph: aten::slice, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %173 = nn.deformable_conv2d(%133, %172, meta[relay.Constant][33], padding=[1, 1, 1, 1], channels=8, kernel_size=[3, 3]) /* C.graph: torchvision::deform_conv2d, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %174 = broadcast_to(meta[relay.Constant][5], shape=[8], dtype="") /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %175 = nn.prelu(%173, %174) /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %176 = nn.conv2d(%175, meta[relay.Constant][34], padding=[0, 0, 0, 0], channels=32, kernel_size=[1, 1]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %177 = nn.bias_add(%176, meta[relay.Constant][1]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %178 = broadcast_to(meta[relay.Constant][2], shape=[32], dtype="") /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %179 = nn.prelu(%177, %178) /* C.graph: aten::prelu, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %180 = nn.conv2d(%179, meta[relay.Constant][35], padding=[0, 0, 0, 0], channels=4, kernel_size=[3, 3]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %181 = nn.bias_add(%180, meta[relay.Constant][36]) /* C.graph: aten::_convolution, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */;
+  %182 = reshape(%181, newshape=[1, 1, 2, 2, 266, 476]) /* C.graph: aten::pixel_shuffle, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_0 */;
+  %183 = transpose(%182, axes=[0, 1, 4, 2, 5, 3]) /* C.graph: aten::pixel_shuffle, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN::_PART_1 */;
+  reshape(%183, newshape=[1, 1, 532, 952]) /* C.graph: aten::pixel_shuffle, jit._trace.TopLevelTracedModule: models_new_930.FSRCNN:: */
+}
+
+/* For debugging purposes the metadata section has been omitted.
+ * If you would like to see the full metadata section you can set the 
+ * option to `True` when invoking `astext`. 
+ */
