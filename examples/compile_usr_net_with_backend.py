@@ -494,11 +494,7 @@ def _generate_deformable_conv_instructions(layer_idx: int, layer: dict):
     )
     
     # Load offset parameters (for deformable sampling)
-    OffsetLoader.dispatch(
-        offset_reg_idx=0,
-        transnum=18,  # 2 * 3 * 3 offsets for 3x3 kernel
-        bas_addr=0
-    )
+    OffsetLoader.dispatch(offset_reg_idx=0, bas_addr=0)
     
     # Load input data
     DataLoader.dispatch(

@@ -1,4 +1,3 @@
-#[version = "0.0.5"]
 def @main(%input_0: Tensor[(1, 1, 270, 480), float32]) -> Tensor[(1, 1, 532, 952), float32] {
   %15 = fn (%p09: Tensor[(32), float32], Primitive=1, relay.reshape_only=1) -> Tensor[(32, 1, 1), float32] {
     expand_dims(%p09, axis=1, num_newaxis=2) /* ty=Tensor[(32, 1, 1), float32] */
@@ -339,7 +338,3 @@ def @main(%input_0: Tensor[(1, 1, 270, 480), float32]) -> Tensor[(1, 1, 532, 952
   %197(%196) /* ty=Tensor[(1, 1, 532, 952), float32] */
 }
 
-/* For debugging purposes the metadata section has been omitted.
- * If you would like to see the full metadata section you can set the 
- * option to `True` when invoking `astext`. 
- */
