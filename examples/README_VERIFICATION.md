@@ -24,7 +24,29 @@ python analyze_binary.py
 
 # 3. Decode binary samples
 python decode_binary.py
+
+# 4. Compare with golden reference (structural / logical-op comparison)
+python compare_with_golden.py              # full sequence comparison
+python compare_with_golden.py --summary-only   # op/layer counts only
 ```
+
+### Comparing with golden reference
+
+To check whether **your compiler output is the same (functionally or structurally) as the golden**:
+
+1. **Structural comparison (this repo)**
+   - Run `python compare_with_golden.py` (optionally `--mine your_inst.txt` and `--golden path/to/golden.txt`).
+   - The script normalizes both streams and optionally collapses the golden’s unrolled per-row instructions into one logical op per “block,” then compares the sequence of logical ops and key fields.
+   - **Note:** The golden in `../golden/` may be for a *different* model (e.g. SD UNet). Then you will see different counts and sequence; use `--summary-only` to compare op/layer mix only. For a true structural match you need a golden that was generated for the *same* model (e.g. USRNet).
+
+2. **Full functional equivalence (same outputs for same inputs)**
+   - Run the reference model (ONNX/PyTorch) on a test input and save the reference output.
+   - Run your instruction stream on the VPU simulator or hardware with the same input.
+   - Compare reference output vs VPU output with `compare_reference_with_vpu_output.py`.
+   - This requires a VPU simulator or hardware; the repo does not run simulation.
+
+**How do I know if my instructions get the same performance or functionality on the hardware as the golden?**  
+See **`HARDWARE_EQUIVALENCE.md`** for a step-by-step guide (functionality: run both on platform and compare outputs; performance: measure cycles on platform, or use `estimate_cycles.py` for an estimated comparison only).
 
 ## Verification Summary
 
